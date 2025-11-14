@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+java -jar "$(pwd "$0")/cli/build/libs/cli-all.jar" "$@"

@@ -1,0 +1,136 @@
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
+
+# Klang Project .gitignore
+
+### Gradle ###
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### Build Outputs ###
+*/build/
+**/build/classes/
+**/build/libs/
+**/build/distributions/
+**/build/generated/
+**/build/resources/
+**/build/scripts/
+**/build/tmp/
+
+### IDE ###
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Eclipse
+.classpath
+.project
+.settings/
+bin/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# NetBeans
+nbproject/
+nbbuild/
+dist/
+nbdist/
+
+### Java ###
+*.class
+*.jar
+!gradle-wrapper.jar
+*.war
+*.ear
+*.nar
+hs_err_pid*
+replay_pid*
+
+### Logs ###
+*.log
+logs/
+
+### OS ###
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.directory
+
+### Temporary Files ###
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+.*.sw?
+
+### Klang Specific ###
+# Compiled Klang files
+*.kc
+*.ko
+
+# Test outputs
+**/teste/
+**/test-output/
+
+# Examples output (if generated)
+examples/output/
+examples/*.out
+
+### Backup Files ###
+*.bak
+*.backup
+*~
+
+### Package Files ###
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+!cli/build/distributions/*.zip
+!cli/build/distributions/*.tar
+
+### Documentation Build ###
+docs/build/
+docs/_build/
+docs/.doctrees/
+
+### Secrets & Config ###
+*.env
+.env.local
+secrets.yml
+config/local.yml
+
+### Coverage & Reports ###
+coverage/
+*.coverage
+htmlcov/
+.pytest_cache/
+junit/
+
+### Dependencies ###
+node_modules/
+vendor/
