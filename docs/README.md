@@ -1,38 +1,29 @@
 # Klang — A Polyglot Programming Language
 
 Klang é uma linguagem experimental focada em **clareza**, **consistência semântica** e **interoperabilidade real entre linguagens**.  
-Criada por ~K', a Klang busca oferecer uma sintaxe moderna e previsível, inspirada em Java e Python, mas com decisões próprias orientadas à legibilidade e ao design sólido de compiladores.
+Criada por ~K', a Klang busca oferecer uma sintaxe moderna e previsível, inspirada em Java e Python, mantendo uma base sólida para evolução do compilador.
 
 ---
 
 ## 🚀 Visão
 
-A Klang nasce com um propósito claro:
+A Klang nasce para:
 
-- Fornecer uma **linguagem poliglota verdadeira**, capaz de se integrar diretamente com Java, Python, Go, Rust e C.  
-- Criar um ambiente onde cada arquivo ou módulo pode optar pela **linguagem-alvo mais eficiente**, sem perder coesão sintática.  
-- Construir uma base simples, minimalista e expressiva, que permita evolução saudável do compilador e da linguagem.
+- Ser uma **linguagem poliglota real**, interoperando diretamente com Java, Python, Go, Rust e C.  
+- Oferecer sintaxe simples, minimalista e expressiva.  
+- Permitir que cada módulo escolha sua **linguagem-alvo** ideal sem perder coesão.  
+- Servir como ponte entre ecossistemas, não como substituta deles.
 
-> Klang não tenta competir com linguagens consolidadas.  
-> Ela existe para interligá-las.
+> Klang existe para interligar linguagens — não competir com elas.
 
 ---
 
 ## ⚙️ Filosofia
 
-Klang é guiada por quatro princípios:
-
-- **Legibilidade humana primeiro**  
-  Sintaxe limpa, mínima e sem ruído.
-
-- **Determinismo semântico**  
-  Nada ambíguo; tudo previsível.
-
-- **Modularidade forte**  
-  Arquivos transpiláveis individualmente.
-
-- **Interop como feature nativa**  
-  A linguagem não “imita” outras — ela as usa diretamente.
+- **Legibilidade acima de tudo**  
+- **Semântica determinística**  
+- **Módulos transpiláveis isolados**  
+- **Interop como fundamento do design**
 
 ---
 
@@ -52,51 +43,51 @@ if (x > 0) {
 
 ```
 klang/
-├── docs/        # Documentação e especificação da linguagem
-├── src/         # Lexer, parser, AST, compiler core
-├── examples/    # Exemplos oficiais
+├── docs/        # Documentação e especificação
+├── src/         # Lexer, parser, AST, transpilers
+├── examples/    # Exemplos de uso
 ├── tests/       # Testes de unidade e integração
-└── LICENSE      # GPL-3.0
+└── LICENSE      # Apache-2.0
 ```
 
 ---
 
-## 📌 Roadmap Rápido
+## 📌 Roadmap
 
-* [ ] Lexer funcional e estável
-* [ ] Parser recursivo + AST
-* [ ] Primeira versão do transpiler Java
-* [ ] CLI para build/run
-* [ ] Documentação v1 da sintaxe
-* [ ] Módulos interoperáveis
+* [ ] Lexer estável
+* [ ] Parser + AST
+* [ ] Transpiler Java
+* [ ] CLI (build/run/transpile)
+* [ ] Documentação da sintaxe v1
+* [ ] Interoperabilidade modular
 * [ ] Runtime básico
 
-A prioridade atual é consolidar **lexer → parser → AST**.
+Prioridade atual: **lexer → parser → AST**.
 
 ---
 
 ## 📄 Licença
 
-Klang é distribuída sob a **Apache-2.0 license**.
-Você pode usar, modificar e redistribuir, desde que preserve a mesma licença.
+Este projeto é licenciado sob a **Apache License 2.0**.
+Você pode usar, modificar e distribuir livremente o software, inclusive para fins comerciais, desde que preserve os avisos de copyright e a licença.
+
+Para detalhes completos, consulte o arquivo `LICENSE`.
 
 ---
 
 ## 🤝 Contribuindo
 
-Contribuições são bem-vindas — especialmente em compiladores, estruturas de AST, ferramentas CLI e documentação.
+Contribuições são bem-vindas — especialmente em áreas como compiladores, AST, runtime e documentação.
 
 1. Faça um fork
 2. Crie uma branch (`feature/nome`)
-3. Envie um PR
+3. Abra um Pull Request
 
-Se quiser debater ideias antes, abra uma issue.
+Issues são bem-vindas para discussão de design e roadmap.
 
 ---
 
 ## 📬 Autor
 
 Criado e mantido por **~K' (Lucas Paulino da Silva)**
-💻 Klang © 2025 — Open Source para sempre
-
-```
+Klang © 2025 — Apache-2.0
