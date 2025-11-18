@@ -189,11 +189,11 @@ public class Lexer {
 
     }
 
-    /*
-     * @Param: cAtual -> Caractere atual
+    /**
+     * @return Retorna a string entre "" a partir do cAtual (cAtual está incluso e
+     *         deve ser = \").
      * 
-     * @Return: Retorna a string entre "" a partir do cAtual (cAtual está incluso e
-     * deve ser = \").
+     * @param cAtual Caractere atual
      */
     private String readString(char cAtual) {
         StringBuilder s = new StringBuilder();
@@ -237,11 +237,11 @@ public class Lexer {
         return s.toString();
     }
 
-    /*
-     * @Param: cAtual -> Caractere atual
+    /**
+     * @return Retorna o char entre '', é retornado como String pois ainda não há
+     *         uso como sendo char.
      * 
-     * @Return: Retorna o char entre '', é retornado como String pois ainda não a
-     * uso como sendo char.
+     * @param cAtual Caractere atual
      */
     private String readCharacter(char cAtual) {
         StringBuilder s = new StringBuilder();
@@ -282,13 +282,12 @@ public class Lexer {
         return s.toString();
     }
 
-    /*
-     * @Param: message -> Mensagem do erro que sera explodido.
-     * 
-     * @Param: note -> Nota/Dica do que fazer para resolver.
-     * 
-     * @Param: tyeError -> Tipo do erro a ser explodido.
-     * 
+    /**
+     * Emite um erro de diagnóstico formatado e lança uma exceção.
+     *
+     * @param message   Mensagem do erro que será exibida.
+     * @param note      Nota ou dica do que fazer para resolver o problema.
+     * @param typeError Tipo do erro a ser emitido (e.g., ERRO, AVISO).
      */
     private void error(String message, String note, DiagnosticType typeError) {
         Span span = new Span(filePath, line, column, line, column + 1);
@@ -302,18 +301,18 @@ public class Lexer {
         throw new DiagnosticException(d);
     }
 
-    /*
-     * @Param: c -> Caractere atual.
+    /**
+     * @return Retorna se o caractere atual é uma quebra de linha.
      * 
-     * @Return: Retorna se o caractere atual é uma quebra de linha.
+     * @param c Caractere atual.
      */
     private boolean isNewLine(char c) {
         return c == '\n';
 
     }
 
-    /*
-     * @Return: Retorna se existe um próximo caractere (letra ou número).
+    /**
+     * @return Retorna se existe um próximo caractere (letra ou número).
      */
     private boolean hasNext() {
         if (EOF()) {
@@ -324,8 +323,8 @@ public class Lexer {
         return Character.isLetter(c) || Character.isDigit(c);
     }
 
-    /*
-     * @Return: Retorna o próximo caractere.
+    /**
+     * @return Retorna o próximo caractere.
      */
     private char getNext() {
         if (EOF()) {
@@ -336,8 +335,8 @@ public class Lexer {
         return source.charAt(position);
     }
 
-    /*
-     * @Return: Retorna se é o fim do código fonte.
+    /**
+     * @return Retorna se é o fim do código fonte.
      */
     private boolean EOF() {
         return position >= source.length();
