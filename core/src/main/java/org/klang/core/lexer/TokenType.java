@@ -12,14 +12,17 @@ public enum TokenType {
     INCREMENT, DECREMENT, POWER,
     LTE, GTE, DOUBLEEQUAL, NOTEQUAL, AND, OR, ARROW,
 
-    // Literlas
-    NUMBER, IDENTIFIER, STRING, CHARACTER,
-    TYPE,
+    @Deprecated
+    // Generics
+    NUMBER, IDENTIFIER,
 
     // Keywords
     RETURN, IF, OTHERWISE, AFTERALL,
     FOR, WHILE, BREAK, CONTINUE,
     PUBLIC, PRIVATE, PROTECTED, STATIC,
+    TRUE, FALSE, INTEGER, DOUBLE, BOOLEAN,
+    CHARACTER, STRING,
+    TYPE,
 
     // Especial
     AT, EOF

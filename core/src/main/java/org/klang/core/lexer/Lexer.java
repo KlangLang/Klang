@@ -310,6 +310,7 @@ public class Lexer {
     }
 
     private void initialzerhashMapTokensTypes() {
+        // Keywords
         tokensTypeByString.put("return", TokenType.RETURN);
         tokensTypeByString.put("if", TokenType.IF);
         tokensTypeByString.put("otherwise", TokenType.OTHERWISE);
@@ -320,29 +321,52 @@ public class Lexer {
         tokensTypeByString.put("continue", TokenType.CONTINUE);
         tokensTypeByString.put("public", TokenType.PUBLIC);
         tokensTypeByString.put("private", TokenType.PRIVATE);
-        tokensTypeByString.put("static", TokenType.STATIC);
         tokensTypeByString.put("protected", TokenType.PROTECTED);
-        tokensTypeByChar.put('@', TokenType.AT);
-        tokensTypeByChar.put(',', TokenType.COMMA);
-        tokensTypeByChar.put('+', TokenType.PLUS);
-        tokensTypeByChar.put('=', TokenType.ASSIGNMENT);
-        tokensTypeByChar.put('*', TokenType.MULTIPLY);
-        tokensTypeByChar.put('/', TokenType.DIVISION);
-        tokensTypeByChar.put('-', TokenType.MINUS);
-        tokensTypeByChar.put('%', TokenType.REMAINDER);
-        tokensTypeByChar.put(';', TokenType.SEMICOLON);
+        tokensTypeByString.put("static", TokenType.STATIC);
+        tokensTypeByString.put("true", TokenType.TRUE);
+        tokensTypeByString.put("false", TokenType.FALSE);
+        tokensTypeByString.put("integer", TokenType.INTEGER);
+        tokensTypeByString.put("double", TokenType.DOUBLE);
+        tokensTypeByString.put("boolean", TokenType.BOOLEAN);
+        tokensTypeByString.put("character", TokenType.CHARACTER);
+        tokensTypeByString.put("String", TokenType.STRING);
+
+        // Single-Characters
         tokensTypeByChar.put('(', TokenType.LPAREN);
         tokensTypeByChar.put(')', TokenType.RPAREN);
         tokensTypeByChar.put('{', TokenType.LBRACE);
         tokensTypeByChar.put('}', TokenType.RBRACE);
-        tokensTypeByChar.put('>', TokenType.GT);
-        tokensTypeByChar.put('<', TokenType.LT);
-        tokensTypeByChar.put('.', TokenType.DOT);
-        tokensTypeByChar.put(':', TokenType.COLON);
-        tokensTypeByChar.put('!', TokenType.BANG);
         tokensTypeByChar.put('[', TokenType.LBRACKET);
         tokensTypeByChar.put(']', TokenType.RBRACKET);
+        tokensTypeByChar.put(',', TokenType.COMMA);
+        tokensTypeByChar.put(';', TokenType.SEMICOLON);
+        tokensTypeByChar.put(':', TokenType.COLON);
+        tokensTypeByChar.put('.', TokenType.DOT);
+        tokensTypeByChar.put('+', TokenType.PLUS);
+        tokensTypeByChar.put('-', TokenType.MINUS);
+        tokensTypeByChar.put('*', TokenType.MULTIPLY);
+        tokensTypeByChar.put('/', TokenType.DIVISION);
+        tokensTypeByChar.put('%', TokenType.REMAINDER);
+        tokensTypeByChar.put('=', TokenType.ASSIGNMENT);
+        tokensTypeByChar.put('<', TokenType.LT);
+        tokensTypeByChar.put('>', TokenType.GT);
+        tokensTypeByChar.put('!', TokenType.BANG);
 
+        // Multi-Characters
+        tokensTypeByString.put("++", TokenType.INCREMENT);
+        tokensTypeByString.put("--", TokenType.DECREMENT);
+        tokensTypeByString.put("**", TokenType.POWER);
+        tokensTypeByString.put("<=", TokenType.LTE);
+        tokensTypeByString.put(">=", TokenType.GTE);
+        tokensTypeByString.put("==", TokenType.DOUBLEEQUAL);
+        tokensTypeByString.put("!=", TokenType.NOTEQUAL);
+        tokensTypeByString.put("&&", TokenType.AND);
+        tokensTypeByString.put("||", TokenType.OR);
+        tokensTypeByString.put("->", TokenType.ARROW);
+
+        // Especials
+        tokensTypeByChar.put('@', TokenType.AT);
+        tokensTypeByChar.put('\0', TokenType.EOF);
     }
 
     public Lexer(String source, String filePath) {
