@@ -32,7 +32,7 @@ public class LexCommand implements Runnable {
                 Diagnostic d = new Diagnostic(
                         DiagnosticType.INFO,
                         "The file is not a .k file.",
-                        new Span(path.toString(), 1, 1, 1, 1))
+                        new Span(path.toString(), 2, 2, 2, 2))
                         .addNote(new Note("You probably gave incorrect information."));
 
                 // Print the formatted error before throwing

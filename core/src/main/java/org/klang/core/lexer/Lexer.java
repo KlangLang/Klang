@@ -464,7 +464,20 @@ public class Lexer {
             }
         }
 
-        if (Character.isLetter(peek()) || peek() == '_') {
+        if (peek() == '_') {
+            if (Character.isDigit(peekNext())) {
+
+                s.append(advance()); // consume '_'
+                while (Character.isDigit(peek())) {
+                    s.append(advance());
+                }
+            } else {
+                error("Invalid integer", "After '_' there must be a digit", DiagnosticType.LEXICAL);
+
+            }
+        }
+
+        if (Character.isLetter(peek())) {
             error("Number followed by invalid identifier.",
                     "Identifiers cannot start with digits.",
                     DiagnosticType.LEXICAL);
@@ -543,21 +556,8 @@ public class Lexer {
         tokensTypeByChar.put('>', TokenType.GT);
         tokensTypeByChar.put('!', TokenType.BANG);
 
-        // Multi-Characters
-        tokensTypeByString.put("++", TokenType.INCREMENT);
-        tokensTypeByString.put("--", TokenType.DECREMENT);
-        tokensTypeByString.put("**", TokenType.POWER);
-        tokensTypeByString.put("<=", TokenType.LTE);
-        tokensTypeByString.put(">=", TokenType.GTE);
-        tokensTypeByString.put("==", TokenType.DOUBLEEQUAL);
-        tokensTypeByString.put("!=", TokenType.NOTEQUAL);
-        tokensTypeByString.put("&&", TokenType.AND);
-        tokensTypeByString.put("||", TokenType.OR);
-        tokensTypeByString.put("->", TokenType.ARROW);
-
         // Specials
         tokensTypeByChar.put('@', TokenType.AT);
-        tokensTypeByChar.put('\0', TokenType.EOF);
     }
 
     /**

@@ -1,10 +1,8 @@
 @Use("c")
 public static void testeNumbers(){
-	integer x = 10;
+	integer x = 10_000;
 	double y = 12.8;
 }
-
-$
 
 @Use("c")
 public static Array<Integer> build(integer n) {
