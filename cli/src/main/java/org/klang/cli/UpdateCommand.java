@@ -29,7 +29,7 @@ public class UpdateCommand implements Runnable {
     @Override
     public void run() {
         System.out.println();
-        System.out.println(WINE + BOLD + "KLANG" + RESET + " " + GRAY + "• Updating…" + RESET);
+        System.out.println(WINE + BOLD + "KLANG" + RESET + " " + GRAY + "- Updating…" + RESET);
         System.out.println();
 
         startSpinner();
@@ -41,16 +41,24 @@ public class UpdateCommand implements Runnable {
             int i = 0;
             while (spinning) {
                 System.out.print("\r  " + GRAY + "Updating… " + RESET + FRAMES[i % FRAMES.length]);
+                System.out.flush(); // ← Adicione isso para garantir que apareça imediatamente
                 i++;
                 try {
                     Thread.sleep(150);
                 } catch (InterruptedException ignored) {
+                    Thread.currentThread().interrupt(); // boa prática
                 }
             }
         });
 
         t.setDaemon(true);
         t.start();
+
+        // Dê tempo para o spinner começar
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException ignored) {
+        }
     }
 
     private void stopSpinner() {
@@ -71,7 +79,7 @@ public class UpdateCommand implements Runnable {
                     .primary(new Span(null, 1, 1, 1, 1))
                     .build();
 
-            System.out.println("  " + RED + "✖ Path not found" + RESET);
+            System.out.println("  " + RED + " - Path not found" + RESET);
             throw new DiagnosticException(d);
         }
 
@@ -86,7 +94,7 @@ public class UpdateCommand implements Runnable {
             stopSpinner();
 
             if (exit != 0) {
-                System.out.println("  " + RED + "✖ Update failed" + RESET);
+                System.out.println("  " + RED + " - Update failed" + RESET);
 
                 Diagnostic d = Diagnostic.builder(DiagnosticType.ERROR,
                         "git pull failed (exit=" + exit + ")")
@@ -97,12 +105,12 @@ public class UpdateCommand implements Runnable {
                 throw new DiagnosticException(d);
             }
 
-            System.out.println("  " + GREEN + "✔ Updated successfully." + RESET);
+            System.out.println("  " + GREEN + " - Updated successfully." + RESET);
 
         } catch (IOException | InterruptedException e) {
 
             stopSpinner();
-            System.out.println("  " + RED + "✖ Update failed" + RESET);
+            System.out.println("  " + RED + " - Update failed" + RESET);
 
             Diagnostic d = Diagnostic.builder(DiagnosticType.ERROR,
                     "Failed to execute update: " + e.getMessage())

@@ -16,7 +16,7 @@ public class KVersionProvider implements IVersionProvider {
                 "",
                 formatHeader(),
                 "",
-                formatEntry("CLI", "0.1.4-dev"),
+                formatEntry("CLI", "0.1.5-dev"),
                 formatEntry("Backend", "JVM"),
                 formatEntry("Build", "debug"),
                 formatEntry("Target", detectTarget()),
@@ -26,11 +26,11 @@ public class KVersionProvider implements IVersionProvider {
 
     private String formatHeader() {
         return WINE + BOLD + "KLANG" + RESET +
-                " " + GRAY + "• 0.1.7-dev" + RESET;
+                " " + "• 0.1.7-dev" + RESET;
     }
 
     private String formatEntry(String label, String value) {
-        return "  " + GRAY + label +
+        return "  " + label +
                 padRight(label, 12) +
                 RESET + GRAY + value + RESET;
     }
