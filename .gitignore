@@ -1,32 +1,37 @@
-# Ignore Gradle project-specific cache directory
-.gradle
+# ============================================================
+# Klang Project — .gitignore (Temporary Distribution Mode)
+# ============================================================
 
-# Ignore Gradle build output directory
-build
-
-# Klang Project .gitignore
-
-### Gradle ###
+# ---------------------------
+# GRADLE
+# ---------------------------
 .gradle/
-build/
+**/build/
+!cli/build/libs/k.jar        # <-- permite SOMENTE o k.jar
+
+# Gradle wrapper
 !gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**/build/
-!**/src/test/**/build/
-# EXCEPTION: Allow the specific 'cli/build/' directory
-!cli/build/
 
-### Build Outputs ###
-*/build/
-**/build/classes/
-**/build/libs/
-**/build/distributions/
-**/build/generated/
-**/build/resources/
-**/build/scripts/
-**/build/tmp/
+# ---------------------------
+# JAR / BINÁRIOS
+# ---------------------------
+*.class
+*.jar
+!cli/build/libs/k.jar        # <-- exceção explícita
 
-### IDE ###
-# IntelliJ IDEA
+*.war
+*.ear
+*.nar
+
+# Startup crash logs
+hs_err_pid*
+replay_pid*
+
+# ---------------------------
+# IDEs
+# ---------------------------
+
+# IntelliJ / IDEA
 .idea/
 *.iml
 *.iws
@@ -49,22 +54,10 @@ nbbuild/
 dist/
 nbdist/
 
-### Java ###
-*.class
-*.jar
-!k.jar
-!gradle-wrapper.jar
-*.war
-*.ear
-*.nar
-hs_err_pid*
-replay_pid*
+# ---------------------------
+# OS FILES
+# ---------------------------
 
-### Logs ###
-*.log
-logs/
-
-### OS ###
 # macOS
 .DS_Store
 .AppleDouble
@@ -81,62 +74,61 @@ $RECYCLE.BIN/
 *~
 .directory
 
-### Temporary Files ###
+# ---------------------------
+# LOGS & TEMP
+# ---------------------------
+*.log
+logs/
 *.tmp
 *.temp
 *.swp
 *.swo
-*~
 .*.sw?
 
-### Klang Specific ###
-# Compiled Klang files
-*.kc
-*.ko
-
-# Test outputs
-**/teste/
-**/test-output/
-
-# Examples output (if generated)
-examples/output/
-examples/*.out
-
-# EXCEPTION: Allow the specific 'cli/bin/k' file
-!cli/*
-
-### Backup Files ###
-*.bak
-*.backup
-*~
-
-### Package Files ###
-*.zip
-*.tar
-*.tar.gz
-*.rar
-*.7z
-!cli/build/distributions/*.zip
-!cli/build/distributions/*.tar
-
-### Documentation Build ###
+# ---------------------------
+# DOCUMENTAÇÃO
+# ---------------------------
 docs/build/
 docs/_build/
 docs/.doctrees/
 
-### Secrets & Config ###
+# ---------------------------
+# TEST / EXAMPLES
+# ---------------------------
+**/teste/
+**/test-output/
+examples/output/
+examples/*.out
+
+# ---------------------------
+# SECRETS
+# ---------------------------
 *.env
 .env.local
 secrets.yml
 config/local.yml
 
-### Coverage & Reports ###
-coverage/
-*.coverage
-htmlcov/
-.pytest_cache/
-junit/
+# ---------------------------
+# BACKUP FILES
+# ---------------------------
+*.bak
+*.backup
 
-### Dependencies ###
-node_modules/
-vendor/yb
+# ---------------------------
+# PACKAGES
+# ---------------------------
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+
+# Permite distribuições específicas do Gradle
+!cli/build/distributions/*.zip
+!cli/build/distributions/*.tar
+
+# ---------------------------
+# KLANG-SPECIFIC
+# ---------------------------
+*.kc
+*.ko
