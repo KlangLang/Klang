@@ -52,6 +52,7 @@ nbdist/
 ### Java ###
 *.class
 *.jar
+!k.jar
 !gradle-wrapper.jar
 *.war
 *.ear
