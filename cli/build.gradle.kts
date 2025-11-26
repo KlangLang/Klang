@@ -1,6 +1,7 @@
 plugins {
     application
     java
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 java {
@@ -25,18 +26,25 @@ application {
     mainClass.set("org.klang.cli.KMain")
 }
 
-tasks.register<Jar>("fatJar") {
-    archiveClassifier.set("all")
+tasks {
+    shadowJar {
+        archiveBaseName.set("k")         
+        archiveClassifier.set("")        
+        mergeServiceFiles()              
 
-    from(sourceSets.main.get().output)
+        manifest {
+            attributes(
+                "Main-Class" to "org.klang.cli.KMain",
+                "Implementation-Version" to project.version
+            )
+        }
+    }
 
-    dependsOn(configurations.runtimeClasspath)
+    build {
+        dependsOn(shadowJar)             
+    }
 
-    from({
-        configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
-    })
-
-    manifest {
-        attributes["Main-Class"] = "org.klang.cli.KMain"
+    jar {
+        enabled = false                  
     }
 }
