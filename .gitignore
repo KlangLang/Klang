@@ -12,6 +12,8 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+# EXCEPTION: Allow the specific 'cli/build/' directory
+!cli/build/
 
 ### Build Outputs ###
 */build/
@@ -98,6 +100,10 @@ $RECYCLE.BIN/
 # Examples output (if generated)
 examples/output/
 examples/*.out
+
+# EXCEPTION: Allow the specific 'cli/bin/k' file
+!cli/bin/
+!cli/build/
 
 ### Backup Files ###
 *.bak
