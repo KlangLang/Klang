@@ -102,8 +102,7 @@ examples/output/
 examples/*.out
 
 # EXCEPTION: Allow the specific 'cli/bin/k' file
-!cli/bin/
-!cli/build/libs/k.jar
+!cli/*
 
 ### Backup Files ###
 *.bak
