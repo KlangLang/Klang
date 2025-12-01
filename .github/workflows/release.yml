@@ -7,17 +7,12 @@ on:
 
 jobs:
   build:
-    name: Build Klang JAR
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          submodules: true
+      - uses: actions/checkout@v4
 
-      - name: Set up JDK
-        uses: actions/setup-java@v4
+      - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '21'
@@ -25,26 +20,25 @@ jobs:
       - name: Build shadow JAR
         run: ./gradlew clean shadowJar
 
-      - name: Upload artifact (klang.jar)
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: klang.jar
-          path: cli/build/libs/klang.jar
+          name: klang
+          path: cli/build/libs/*.jar
 
   release:
-    name: Publish Release
     needs: build
     runs-on: ubuntu-latest
 
     steps:
-      - name: Download built artifact
+      - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: klang.jar
+          name: klang
 
-      - name: Create GitHub Release
+      - name: Publish Release
         uses: softprops/action-gh-release@v2
         with:
-          files: klang.jar
+          files: "*.jar"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
