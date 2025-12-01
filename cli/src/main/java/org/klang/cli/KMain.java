@@ -12,7 +12,6 @@ import picocli.CommandLine;
         LexCommand.class,
         GenerateCompletion.class,
         HelpCommand.class,
-        UpdateCommand.class
 })
 
 public class KMain implements Runnable {

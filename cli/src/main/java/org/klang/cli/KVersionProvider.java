@@ -9,6 +9,7 @@ public class KVersionProvider implements IVersionProvider {
 
     private static final String WINE = "\u001B[38;2;127;0;31m";
     private static final String GRAY = "\u001B[38;2;180;180;180m";
+    private static final String VERSION = "0.1.10";
 
     @Override
     public String[] getVersion() {
@@ -16,7 +17,6 @@ public class KVersionProvider implements IVersionProvider {
                 "",
                 formatHeader(),
                 "",
-                formatEntry("CLI", "0.1.10-dev"),
                 formatEntry("Backend", "JVM"),
                 formatEntry("Build", "debug"),
                 formatEntry("Target", detectTarget()),
@@ -26,7 +26,7 @@ public class KVersionProvider implements IVersionProvider {
 
     private String formatHeader() {
         return WINE + BOLD + "KLANG" + RESET +
-                " " + "• 0.1.8-dev" + RESET;
+                " " + "• " + VERSION + "-dev" + RESET;
     }
 
     private String formatEntry(String label, String value) {

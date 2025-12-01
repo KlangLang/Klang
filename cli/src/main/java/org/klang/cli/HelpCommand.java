@@ -12,7 +12,7 @@ public class HelpCommand implements Runnable {
     // Klang palette
     private static final String WINE = "\u001B[38;2;127;0;31m";
     private static final String GRAY_LIGHT = "\u001B[38;2;209;209;209m";
-    private static final String INFO_COLOR = "\u001B[38;2;100;149;237m";
+    // private static final String INFO_COLOR = "\u001B[38;2;100;149;237m";
     private static final String NOTE_COLOR = GRAY_LIGHT;
 
     @Override
