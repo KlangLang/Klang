@@ -26,7 +26,7 @@ public class UpdateCommand implements Runnable {
     private static final String[] FRAMES = { "⦿", "⦾" };
     private volatile boolean spinning = true;
 
-    private final String PROJECT_DIR = System.getProperty("user.home") + "/Klang";
+    private final String PROJECT_DIR = System.getProperty("user.home") + "/KlangLang/Klang";
 
     @Override
     public void run() {

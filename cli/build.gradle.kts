@@ -1,6 +1,6 @@
 plugins {
-    application
-    java
+    id("application")
+    id("java")
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
@@ -23,14 +23,18 @@ dependencies {
 }
 
 application {
+    // SUA CLI INTERNA → “kc”
+    // O usuário nunca vai rodar "k" dentro do jar.
     mainClass.set("org.klang.cli.KMain")
 }
 
 tasks {
     shadowJar {
-        archiveBaseName.set("k")         
-        archiveClassifier.set("")        
-        mergeServiceFiles()              
+        archiveBaseName.set("klang")   // nome final correto
+        archiveClassifier.set("")       // sem -all
+        archiveVersion.set("")          // sem versão no nome
+
+        mergeServiceFiles()
 
         manifest {
             attributes(
@@ -41,10 +45,11 @@ tasks {
     }
 
     build {
-        dependsOn(shadowJar)             
+        dependsOn(shadowJar)
     }
 
+    // Remove o .jar padrão
     jar {
-        enabled = false                  
+        enabled = false
     }
 }

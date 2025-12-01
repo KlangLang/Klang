@@ -63,7 +63,7 @@ set CMD_LINE_ARGS=%*
 :execute
 @rem Setup the command line
 
-set CLASSPATH=%APP_HOME%\lib\k.jar
+set CLASSPATH=%APP_HOME%\lib\klang.jar
 
 @rem Execute cli
 "%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %CLI_OPTS%  -jar "%CLASSPATH%" %CMD_LINE_ARGS%
