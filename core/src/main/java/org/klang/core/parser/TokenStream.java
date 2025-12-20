@@ -1,7 +1,6 @@
 package org.klang.core.parser;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.klang.core.lexer.Token;
@@ -9,6 +8,8 @@ import org.klang.core.lexer.TokenType;
 import org.klang.core.parser.ast.BinaryExpressionNode;
 import org.klang.core.parser.ast.ExpressionNode;
 import org.klang.core.parser.ast.LiteralExpressionNode;
+import org.klang.core.parser.ast.ProgramNode;
+import org.klang.core.parser.ast.StatementNode;
 import org.klang.core.parser.ast.VariableDeclarationNode;
 import org.klang.core.parser.ast.VariableExpressionNode;
 import org.klang.core.Heddle;
@@ -18,7 +19,7 @@ public class TokenStream {
     List<Token> tokens = new ArrayList<>();
     int position = 0;
 
-    public TokenStream(ArrayList<Token> tokens){
+    public TokenStream(List<Token> tokens){
         this.tokens = tokens;
     }
 
@@ -136,7 +137,7 @@ public class TokenStream {
 
             ExpressionNode right = parseFactor();
 
-            left = new BinaryExpressionNode(left, operator, right, left.line, left.column);
+            left = new BinaryExpressionNode(left, operator, right, operator.getLine(), operator.getColumn());
         }
 
         return left;
@@ -183,6 +184,18 @@ public class TokenStream {
         return null;
     }
 
+    private StatementNode parseStatement() {
+        if (isAtEnd()) return null;
+
+        if (isType(current().getType())) {
+            return parseValDecl();
+        }
+
+        error("Unexpected token '" + current().getType() + "'");
+        return null;
+    }
+
+
     private boolean isType(TokenType type){
         return Heddle.TYPES.contains(type);
     }
@@ -195,11 +208,20 @@ public class TokenStream {
         return Heddle.TERM_OPERATORS.contains(type);
     }
 
-    private boolean isNumber(TokenType type){
-        return Heddle.NUMBER_TYPE.contains(type);
-    }
-
     private boolean isFactorOperator(TokenType type){
         return Heddle.FACTOR_OPERATORS.contains(type);
     }
+
+    public ProgramNode parseProgram() {
+        List<StatementNode> statements = new ArrayList<>();
+
+        while (!isAtEnd()) {
+            StatementNode stmt = parseStatement();
+            if (stmt != null) statements.add(stmt);
+        }
+
+
+        return new ProgramNode(statements);
+    }
+
 }

@@ -16,7 +16,11 @@ public final class Heddle {
 
     public static final EnumSet<TokenType> COMPARISION_OPERATORS = EnumSet.of(
         TokenType.LT,
-        TokenType.GT
+        TokenType.GT,
+        TokenType.DOUBLEEQUAL,
+        TokenType.NOTEQUAL,
+        TokenType.GTE,
+        TokenType.LTE
     );
 
 
