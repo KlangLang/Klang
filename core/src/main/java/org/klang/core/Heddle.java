@@ -40,5 +40,11 @@ public final class Heddle {
         TokenType.REMAINDER
     );
 
+    public static final EnumSet<TokenType> ACESS_MODIFIERS = EnumSet.of(
+        TokenType.PUBLIC,
+        TokenType.PROTECTED,
+        TokenType.INTERNAL
+    );
+
     private Heddle() {}
 }

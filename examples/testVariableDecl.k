@@ -20,3 +20,9 @@ foo(x, y * 3);
     x = x + 1;
     print(x);
 }
+
+
+// teste de declaração de função
+public integer soma(integer a, integer b){
+    return a + b;
+}

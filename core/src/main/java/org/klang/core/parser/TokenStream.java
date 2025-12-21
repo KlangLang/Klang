@@ -1,18 +1,23 @@
 package org.klang.core.parser;
 
+import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.klang.core.lexer.Token;
 import org.klang.core.lexer.TokenType;
+import org.klang.core.parser.ast.AccessModifier;
 import org.klang.core.parser.ast.AssignmentStatementNode;
 import org.klang.core.parser.ast.BinaryExpressionNode;
 import org.klang.core.parser.ast.BlockStatementNode;
 import org.klang.core.parser.ast.CallExpressionNode;
 import org.klang.core.parser.ast.ExpressionNode;
 import org.klang.core.parser.ast.ExpressionStatementNode;
+import org.klang.core.parser.ast.FunctionDeclarationNode;
 import org.klang.core.parser.ast.LiteralExpressionNode;
+import org.klang.core.parser.ast.ParameterNode;
 import org.klang.core.parser.ast.ProgramNode;
+import org.klang.core.parser.ast.ReturnStatementNode;
 import org.klang.core.parser.ast.StatementNode;
 import org.klang.core.parser.ast.VariableDeclarationNode;
 import org.klang.core.parser.ast.VariableExpressionNode;
@@ -173,7 +178,7 @@ public class TokenStream {
         return new CallExpressionNode(callee, args, callee.getLine(), callee.getColumn());
     }
 
-    public StatementNode parseBlockStatement(){
+    public BlockStatementNode parseBlockStatement(){
         Token openBrace = expect(TokenType.LBRACE, "Expected '{'");
 
         List<StatementNode> statements = new ArrayList<>();
@@ -185,15 +190,90 @@ public class TokenStream {
         expect(TokenType.RBRACE, "Expected '}' after block");
 
         return new BlockStatementNode(statements, openBrace.getLine(), openBrace.getColumn());
+    }
 
+    private StatementNode parseFunctionDeclaration(){
+        AccessModifier access = AccessModifier.INTERNAL;
+
+        if (match(TokenType.PUBLIC)){
+            access = AccessModifier.PUBLIC;
+        } else if (match(TokenType.PROTECTED)){
+            access = AccessModifier.PROTECTED;
+        } else if (match(TokenType.INTERNAL)){
+            access = AccessModifier.INTERNAL;
+        }
+
+        Token returnType = current();
+
+        if (!isType(returnType.getType())){
+            error("Expected return type in function declaration");
+        }
+
+        returnType = consume();
+
+        Token name = expect(TokenType.IDENTIFIER, "Expected function name");
+
+        expect(TokenType.LPAREN, "Expected '(' after function name");
+
+        List<ParameterNode> parameters = new ArrayList<>();
+
+        if (!check(TokenType.RPAREN)){
+            do {
+                Token paramType = current();
+                if (!isType(paramType.getType())){
+                    error("Expected parameter type");
+                }
+
+                paramType = consume();
+
+                Token parameterName = expect(TokenType.IDENTIFIER, "Expected parameter name");
+
+                parameters.add(new ParameterNode(paramType, parameterName));
+            } while (match(TokenType.COMMA));
+        }
+
+        expect(TokenType.RPAREN, "Expected ')' after parameters");
+
+        BlockStatementNode body = parseBlockStatement();
+
+        return new FunctionDeclarationNode(access, returnType, name, parameters, body, returnType.getLine(), returnType.getColumn());
+    }
+
+    public StatementNode parseReturnStatement(){
+        Token keyword = expect(TokenType.RETURN, "Expected 'return'");
+
+        ExpressionNode value = null;
+
+        if (!check(TokenType.SEMICOLON)){
+            value = parseExpression();
+        }
+
+        expect(TokenType.SEMICOLON, "Expected ';' after return");
+        
+        return new ReturnStatementNode(value, keyword.getLine(), keyword.getColumn());
     }
 
     private StatementNode parseStatement() {
         if (isAtEnd()) return null;
 
+        if (isType(current().getType()) &&
+            peek(1).getType() == TokenType.IDENTIFIER &&
+            peek(2).getType() == TokenType.LPAREN) {
+            
+            error("Function declaration requires an access modifier (public | protected | internal)");
+        }
+
+        if (looksLikeFunctionDeclaration()) {
+            return parseFunctionDeclaration();
+        }
+
         // Bloco {}
         if (check(TokenType.LBRACE)){
             return parseBlockStatement();
+        }
+        
+        if (check(TokenType.RETURN)) {
+            return parseReturnStatement();
         }
 
         // declaração
@@ -281,6 +361,31 @@ public class TokenStream {
         return consume();
     }
 
+    public boolean looksLikeFunctionDeclaration(){
+        int i = 0;
+
+        if (!isAccessModifier(peek(i).getType())){
+            return false;
+        }
+        i++;
+
+        // type
+
+        if (!isType(peek(i).getType())){
+            return false;
+        }
+        i++;
+
+        // function name
+        if (peek(i).getType() != TokenType.IDENTIFIER){
+            return false;
+        }
+        i++;
+
+        // Must be '('
+        return peek(i).getType() == TokenType.LPAREN;
+    }
+
     public void error(String message){
         throw new ParserException(message);
     }
@@ -301,4 +406,7 @@ public class TokenStream {
         return Heddle.FACTOR_OPERATORS.contains(type);
     }
 
+    private boolean isAccessModifier(TokenType type){
+        return Heddle.ACESS_MODIFIERS.contains(type);
+    }
 }

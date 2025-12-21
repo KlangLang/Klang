@@ -527,7 +527,7 @@ public class Lexer {
         tokensTypeByString.put("break", TokenType.BREAK);
         tokensTypeByString.put("continue", TokenType.CONTINUE);
         tokensTypeByString.put("public", TokenType.PUBLIC);
-        tokensTypeByString.put("private", TokenType.PRIVATE);
+        tokensTypeByString.put("internal", TokenType.INTERNAL);
         tokensTypeByString.put("protected", TokenType.PROTECTED);
         tokensTypeByString.put("static", TokenType.STATIC);
         tokensTypeByString.put("true", TokenType.TRUE);
