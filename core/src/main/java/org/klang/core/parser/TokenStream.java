@@ -7,6 +7,7 @@ import org.klang.core.lexer.Token;
 import org.klang.core.lexer.TokenType;
 import org.klang.core.parser.ast.AssignmentStatementNode;
 import org.klang.core.parser.ast.BinaryExpressionNode;
+import org.klang.core.parser.ast.BlockStatementNode;
 import org.klang.core.parser.ast.CallExpressionNode;
 import org.klang.core.parser.ast.ExpressionNode;
 import org.klang.core.parser.ast.ExpressionStatementNode;
@@ -172,8 +173,28 @@ public class TokenStream {
         return new CallExpressionNode(callee, args, callee.getLine(), callee.getColumn());
     }
 
+    public StatementNode parseBlockStatement(){
+        Token openBrace = expect(TokenType.LBRACE, "Expected '{'");
+
+        List<StatementNode> statements = new ArrayList<>();
+
+        while (!check(TokenType.RBRACE) && !isAtEnd()) {
+            statements.add(parseStatement());
+        }
+
+        expect(TokenType.RBRACE, "Expected '}' after block");
+
+        return new BlockStatementNode(statements, openBrace.getLine(), openBrace.getColumn());
+
+    }
+
     private StatementNode parseStatement() {
         if (isAtEnd()) return null;
+
+        // Bloco {}
+        if (check(TokenType.LBRACE)){
+            return parseBlockStatement();
+        }
 
         // declaração
         if (isType(current().getType())) {

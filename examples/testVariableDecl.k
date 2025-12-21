@@ -9,3 +9,14 @@ x = 1 + 2 * 4 / 7;
 println(1);
 print(1 + 2);
 foo(x, y * 3);
+
+// teste de escopo
+
+{
+}
+
+{
+    integer x = 1;
+    x = x + 1;
+    print(x);
+}
