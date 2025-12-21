@@ -1,4 +1,11 @@
+// Declarações de viariaveis
 integer x = 12;
 integer y = x;
 
+// Teste de atribuição
 x = 1 + 2 * 4 / 7;
+
+// Teste de chamada de função e argumentos
+println(1);
+print(1 + 2);
+foo(x, y * 3);

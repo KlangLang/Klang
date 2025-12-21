@@ -7,7 +7,9 @@ import org.klang.core.lexer.Token;
 import org.klang.core.lexer.TokenType;
 import org.klang.core.parser.ast.AssignmentStatementNode;
 import org.klang.core.parser.ast.BinaryExpressionNode;
+import org.klang.core.parser.ast.CallExpressionNode;
 import org.klang.core.parser.ast.ExpressionNode;
+import org.klang.core.parser.ast.ExpressionStatementNode;
 import org.klang.core.parser.ast.LiteralExpressionNode;
 import org.klang.core.parser.ast.ProgramNode;
 import org.klang.core.parser.ast.StatementNode;
@@ -98,6 +100,10 @@ public class TokenStream {
         if (check(TokenType.IDENTIFIER)){
             Token identifier = consume();
 
+            if (check(TokenType.LPAREN)){
+                return parseCallExpression(identifier);
+            }
+
             return new VariableExpressionNode(identifier, identifier.getLine(), identifier.getColumn());
         }
 
@@ -112,19 +118,6 @@ public class TokenStream {
         }
     
         error("Expected Expression");
-        return null;
-    }
-
-    private StatementNode parseStatement() {
-        if (isAtEnd()) return null;
-
-        if (isType(current().getType())) {
-            return parseValDecl();
-        } else if (check(TokenType.IDENTIFIER) && peek(1).getType() == TokenType.ASSIGNMENT){
-            return parseAssignmentStatement();
-        }
-
-        error("Unexpected token '" + current().getType() + "'");
         return null;
     }
 
@@ -154,6 +147,49 @@ public class TokenStream {
 
         return new AssignmentStatementNode(identifier, value, identifier.getLine(), identifier.getColumn());
     }
+
+    public StatementNode parseExpressionStatement(){
+        ExpressionNode expr = parseExpression();
+
+        expect(TokenType.SEMICOLON, "Expected ';' after expression");
+
+        return new ExpressionStatementNode(expr, expr.line, expr.column);
+    }
+
+    public ExpressionNode parseCallExpression(Token callee){
+        expect(TokenType.LPAREN, "Expected '(' after function name");
+
+        List<ExpressionNode> args = new ArrayList<>();
+
+        if (!check(TokenType.RPAREN)){
+            do {
+                args.add(parseExpression());
+            } while (match(TokenType.COMMA));
+        }
+
+        expect(TokenType.RPAREN, "Expected ')' after arguments");
+
+        return new CallExpressionNode(callee, args, callee.getLine(), callee.getColumn());
+    }
+
+    private StatementNode parseStatement() {
+        if (isAtEnd()) return null;
+
+        // declaração
+        if (isType(current().getType())) {
+            return parseValDecl();
+        }
+
+        // assignment (IDENTIFIER '=' ...)
+        if (check(TokenType.IDENTIFIER)
+            && peek(1).getType() == TokenType.ASSIGNMENT) {
+            return parseAssignmentStatement();
+        }
+
+        // expression statement
+        return parseExpressionStatement();
+    }
+
 
     // Utility do Parser
     public TokenStream(List<Token> tokens){
