@@ -28,6 +28,12 @@ public static void main(Array<String> args) {
                                                                                                                                            
 }
 
+
 null
 try {} catch {}
 
+
+if (a & b){}
+
+
+"testando"

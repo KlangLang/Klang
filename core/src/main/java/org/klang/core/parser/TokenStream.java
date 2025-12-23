@@ -24,7 +24,7 @@ import org.klang.core.parser.ast.VariableDeclarationNode;
 import org.klang.core.parser.ast.VariableExpressionNode;
 import org.klang.core.semantics.TypeContext;
 import org.klang.core.Heddle;
-import org.klang.core.errors.ParserException;
+import org.klang.core.error.ParserException;
 
 public class TokenStream {
     List<Token> tokens = new ArrayList<>();
@@ -389,7 +389,7 @@ public class TokenStream {
     }
 
     public void error(String message){
-        throw new ParserException(message);
+        throw new RuntimeException(message);
     }
 
         private boolean isType(TokenType type){

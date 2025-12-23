@@ -9,34 +9,35 @@ public class KVersionProvider implements IVersionProvider {
 
     private static final String WINE = "\u001B[38;2;127;0;31m";
     private static final String GRAY = "\u001B[38;2;180;180;180m";
-    private static final String VERSION = "0.3.0";
+    private static final String VERSION = "0.4.0";
 
     @Override
     public String[] getVersion() {
         return new String[] {
-                "",
-                formatHeader(),
-                "",
-                formatEntry("Backend", "JVM"),
-                formatEntry("Build", "debug"),
-                formatEntry("Target", detectTarget()),
-                ""
+            "",
+            formatHeader(),
+            "",
+            formatEntry("Backend", "JVM"),
+            formatEntry("Build", "debug"),
+            formatEntry("Target", detectTarget()),
+            ""
         };
     }
 
     private static String formatHeader() {
         return WINE + BOLD + "KLANG" + RESET +
-                " " + "• " + VERSION + "-dev" + RESET;
+               " • " + VERSION + "-dev";
     }
 
     private static String formatEntry(String label, String value) {
         return "  " + label +
-                padRight(label, 12) +
-                RESET + GRAY + value + RESET;
+               padRight(label, 12) +
+               RESET + GRAY + value + RESET;
     }
 
     private static String detectTarget() {
-        return System.getProperty("os.name") + "-" + System.getProperty("os.arch");
+        return System.getProperty("os.name") + "-" +
+               System.getProperty("os.arch");
     }
 
     private static String padRight(String text, int total) {

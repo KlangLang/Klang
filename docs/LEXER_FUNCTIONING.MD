@@ -39,13 +39,12 @@
 - ARROW           ->
 
 ## Literals
-- NUMBER          [0-9]+
-- IDENTIFIER      [A-Za-z_][A-Za-z0-9_]*
-- STRING          " ... "
-- CHARACTER       'x'
+- NUMBER                  [0-9]+
+- IDENTIFIER              [A-Za-z_][A-Za-z0-9_]*
+- STRING_LITERAL          " ... "
+- CHARACTER_LITERAL       'x'
 
 ## Keywords
-- CLASS
 - USE
 - RETURN
 - IF
@@ -56,9 +55,8 @@
 - BREAK
 - CONTINUE
 - PUBLIC
-- PRIVATE
 - PROTECTED
-- STATIC
+- INTERNAL
 - TRUE
 - FALSE
 - INTEGER
@@ -67,8 +65,7 @@
 - CHARACTER
 - STRING
 - VOID
-- FRESH // at new
-
+- NEW
 
 ## Special
 - AT              @

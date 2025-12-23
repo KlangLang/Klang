@@ -1,11 +1,13 @@
 package org.klang.cli;
 
-import picocli.CommandLine.Command;
 import picocli.CommandLine;
-
+import picocli.CommandLine.Command;
 import picocli.AutoComplete;
 
-@Command(name = "gen-completion", description = "Generate autocomplete script for bash/zsh")
+@Command(
+    name = "gen-completion",
+    description = "Generate autocomplete script for bash/zsh"
+)
 public class GenerateCompletion implements Runnable {
 
     @Override

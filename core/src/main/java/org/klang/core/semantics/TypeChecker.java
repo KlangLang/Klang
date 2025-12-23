@@ -1,8 +1,6 @@
 package org.klang.core.semantics;
 
-import java.util.List;
-
-import org.klang.core.errors.SemanticException;
+import org.klang.core.error.SemanticException;
 import org.klang.core.lexer.Token;
 import org.klang.core.parser.ast.*;
 
@@ -152,8 +150,6 @@ public class TypeChecker {
     }
 
     private void error(String message, AstNode node) {
-        throw new SemanticException(
-            message + " at line " + node.line + ", column " + node.column
-        );
+        
     }
 }

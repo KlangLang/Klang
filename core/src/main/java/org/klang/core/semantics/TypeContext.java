@@ -3,7 +3,9 @@ package org.klang.core.semantics;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.klang.core.errors.SemanticException;
+import javax.management.RuntimeErrorException;
+
+import org.klang.core.error.SemanticException;
 
 public class TypeContext {
 
@@ -16,7 +18,7 @@ public class TypeContext {
 
     public void declare(String name, Type type) {
         if (symbols.containsKey(name)) {
-            throw new SemanticException("Variable '" + name + "' already declared in this scope");
+            throw new RuntimeException("");
         }
         symbols.put(name, type);
     }
@@ -28,6 +30,6 @@ public class TypeContext {
         if (parent != null) {
             return parent.resolve(name);
         }
-        throw new SemanticException("Undefined variable '" + name + "'");
+        throw new RuntimeException("Undefined variable '" + name + "'");
     }
 }
