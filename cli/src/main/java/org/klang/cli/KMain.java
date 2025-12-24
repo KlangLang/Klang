@@ -1,7 +1,8 @@
 package org.klang.cli;
 
+import org.klang.cli.error.KlangExceptionHandler;
+import org.klang.cli.error.KlangParameterExceptionHandler;
 import org.klang.core.error.KException;
-
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -50,12 +51,21 @@ public class KMain implements Runnable {
 
     public static void main(String[] args) {
         try {
-            int exitCode = new CommandLine(new KMain()).execute(args);
+            CommandLine cmd = new CommandLine(new KMain());
+            
+            cmd.setExecutionExceptionHandler(new KlangExceptionHandler());
+            cmd.setParameterExceptionHandler(new KlangParameterExceptionHandler());
+            
+            int exitCode = cmd.execute(args);
             System.exit(exitCode);
             
         } catch (KException e) {
-            System.out.println("Saindo por aqui");
-            System.out.println(e.format());
+            System.err.println(e.format());
+            System.exit(1);
+        } catch (Exception e) {
+            System.err.println("Unexpected error: " + e.getMessage());
+            e.printStackTrace();
+            System.exit(1);
         }
     }
 }

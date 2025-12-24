@@ -12,8 +12,9 @@ public final class LexicalException extends KException {
             String cause,
             String fix,
             String example,
-            String note) {
-        super(code, location, contextLines, cause, fix, example, note);
+            String note,
+            int length) {
+        super(code, location, contextLines, cause, fix, example, note, length);
     }
 
     @Override
@@ -33,7 +34,7 @@ public final class LexicalException extends KException {
           .append("\n");
         
         // ERROR (Lexical) discreto, só informativo
-        sb.append(DiagnosticColors.structure("ERROR (Lexical)"))
+        sb.append(DiagnosticColors.structure("ERROR (" + code.phase.name() + ")"))
           .append("\n");
         
         sb.append(DiagnosticColors.structure("at "))
@@ -67,10 +68,10 @@ public final class LexicalException extends KException {
             // Caret vermelho na linha do erro
             if (currentLine == errorLine) {
                 sb.append(" ".repeat(maxLineDigitWidth))
-                  .append(DiagnosticColors.separator(" | "))
-                  .append(" ".repeat(Math.max(0, location.column())))
-                  .append(DiagnosticColors.error("^"))
-                  .append("\n");
+                  .append(DiagnosticColors.separator(" |  "))
+                  .append(" ".repeat(Math.max(0, location.column() - length)))
+                  .append(DiagnosticColors.error("^".repeat(this.length)));
+                  sb.append("\n");
             }
         }
 

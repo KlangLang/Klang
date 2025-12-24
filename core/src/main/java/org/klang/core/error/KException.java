@@ -11,6 +11,7 @@ public abstract class KException extends RuntimeException {
     protected final String fix;
     protected final String example;
     protected final String note;
+    protected final int length;
 
     protected KException(
         DiagnosticCode code,
@@ -19,7 +20,8 @@ public abstract class KException extends RuntimeException {
         String cause,
         String fix,
         String example,
-        String note
+        String note,
+        int length
     ) {
         super(code.name);
         this.code = code;
@@ -29,6 +31,7 @@ public abstract class KException extends RuntimeException {
         this.fix = fix;
         this.example = example;
         this.note = note;
+        this.length = length;
     }
 
     @Override
@@ -38,7 +41,6 @@ public abstract class KException extends RuntimeException {
 
     @Override
     public String toString() {
-        // Isso garante que o toString() também use seu formato customizado
         return format();
     }
 

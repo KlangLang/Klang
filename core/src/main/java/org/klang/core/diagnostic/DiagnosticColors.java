@@ -5,63 +5,39 @@ package org.klang.core.diagnostic;
  * Baseado em camadas semânticas, não decoração.
  */
 public final class DiagnosticColors {
+    // Camada 0 - TEXTO NEUTRO
 
-    // ========================================
-    // CAMADA 0 - TEXTO NEUTRO
-    // ========================================
-    
-    /** Texto de código, exemplos, conteúdo geral */
     public static final String NEUTRAL = "\u001B[38;2;220;220;220m";
     
-    /** Texto absolutamente neutro (sem cor) */
     public static final String PLAIN = "\u001B[0m";
 
-    // ========================================
-    // CAMADA 1 - ESTRUTURA (metadados)
-    // ========================================
+    // Camada 1 - ESTRUTURA (metadados)
     
-    /** Metadados: [K:E001], ERROR (Lexical), at file:line:col */
     public static final String STRUCTURE = "\u001B[38;2;150;150;150m";
     
-    /** Números de linha (discretos, não competem com código) */
     public static final String LINE_NUMBER = "\u001B[38;2;90;90;90m";
     
-    /** Separadores: pipes |, dois-pontos em labels (mais escuros ainda) */
     public static final String SEPARATOR = "\u001B[38;2;70;70;70m";
 
-    // ========================================
-    // CAMADA 2 - ERRO (foco visual)
-    // ========================================
+    // Camada 2 - ERRO (foco visual)
     
-    /** Código do erro: [K:E001] - âncora visual forte */
     public static final String ERROR_CODE = "\u001B[38;2;220;50;47m";
     
-    /** Nome do erro: InvalidCharacter - descrição, não foco */
     public static final String ERROR_NAME = "\u001B[38;2;200;200;200m";
     
-    /** Caret ^, token inválido - foco absoluto */
     public static final String ERROR_HIGHLIGHT = "\u001B[38;2;220;50;47m";
 
-    // ========================================
-    // CAMADA 3 - AJUDA (resolução)
-    // ========================================
+    // Camada 3 - AJUDA (resolução)
     
-    /** Fix, Example, Note - instrução construtiva */
     public static final String HELP = "\u001B[38;2;100;150;200m";
     
-    /** Destaque em exemplos (opcional) */
     public static final String HELP_ACCENT = "\u001B[38;2;120;180;220m";
 
-    // ========================================
     // RESET
-    // ========================================
     
-    /** Sempre use após aplicar cor */
     public static final String RESET = "\u001B[0m";
 
-    // ========================================
     // MODO DE RENDERIZAÇÃO
-    // ========================================
     
     private static RenderMode mode = RenderMode.AUTO;
 
@@ -84,10 +60,6 @@ public final class DiagnosticColors {
         return mode;
     }
 
-    // ========================================
-    // API PÚBLICA - COLORIZAÇÃO
-    // ========================================
-
     /**
      * Aplica cor semântica a um texto.
      * Respeita o modo de renderização configurado.
@@ -100,73 +72,57 @@ public final class DiagnosticColors {
         };
     }
 
-    /** Texto neutro (código, exemplos) */
     public static String neutral(String text) {
         return colorize(text, NEUTRAL);
     }
 
-    /** Estrutura (metadados, números de linha) */
     public static String structure(String text) {
         return colorize(text, STRUCTURE);
     }
 
-    /** Números de linha (discretos) */
     public static String lineNumber(String text) {
         return colorize(text, LINE_NUMBER);
     }
 
-    /** Separadores (pipes, dois-pontos) */
     public static String separator(String text) {
         return colorize(text, SEPARATOR);
     }
 
-    /** Erro primário (foco visual) */
     public static String error(String text) {
         return colorize(text, ERROR_HIGHLIGHT);
     }
 
-    /** Código do erro [K:E001] - âncora visual */
     public static String errorCode(String text) {
         return colorize(text, ERROR_CODE);
     }
 
-    /** Nome do erro - descrição */
     public static String errorName(String text) {
         return colorize(text, ERROR_NAME);
     }
 
-    /** Erro secundário (contexto) */
     public static String errorDim(String text) {
         return colorize(text, ERROR_HIGHLIGHT);
     }
 
-    /** Ajuda (fix, example) */
     public static String help(String text) {
         return colorize(text, HELP);
     }
 
-    /** Destaque em ajuda */
     public static String helpAccent(String text) {
         return colorize(text, HELP_ACCENT);
     }
-
-    // ========================================
-    // DETECÇÃO DE SUPORTE
-    // ========================================
 
     /**
      * Detecta se o terminal atual suporta cores ANSI.
      * Baseado em variáveis de ambiente e propriedades do sistema.
      */
     public static boolean isColorSupported() {
-        // Windows 10+ com terminal moderno
         String os = System.getProperty("os.name", "").toLowerCase();
         if (os.contains("win")) {
             String wtSession = System.getenv("WT_SESSION");
             return wtSession != null; // Windows Terminal
         }
 
-        // Unix-like: verifica TERM
         String term = System.getenv("TERM");
         if (term == null) return false;
 
@@ -186,10 +142,6 @@ public final class DiagnosticColors {
             setMode(RenderMode.PLAIN);
         }
     }
-
-    // ========================================
-    // BUILDER SEMÂNTICO (uso avançado)
-    // ========================================
 
     /**
      * Builder para composição complexa de mensagens coloridas.
@@ -250,10 +202,6 @@ public final class DiagnosticColors {
     public static Builder builder() {
         return new Builder();
     }
-
-    // ========================================
-    // TESTES VISUAIS
-    // ========================================
 
     /**
      * Imprime exemplo visual de todas as cores.

@@ -21,6 +21,7 @@ public class Lexer {
     String filePath;
 
     private final SourceManager sourceManager;
+    private StringBuilder stringBuilder = new StringBuilder();
 
     HashMap<String, TokenType> tokensTypeByString = new HashMap<>();
     HashMap<Character, TokenType> tokensTypeByChar = new HashMap<>();
@@ -34,7 +35,7 @@ public class Lexer {
     }
 
     public List<Token> tokenizeSourceCode() {
-
+        this.stringBuilder.setLength(0);
         while (!isAtEnd()) {
 
             char c = peek();
@@ -82,11 +83,13 @@ public class Lexer {
             if (Character.isLetter(c) || c == '_' || c == '$') {
 
                 if (c == '$' && !(Character.isLetter(peekNext()) || peekNext() == '_')) {
+                    String example = "integer $variableName = 10;"; 
+
                     lexicalError(
                             DiagnosticCode.E001,
                             "The character '$' cannot start an identifier alone.",
                             "Identifiers starting with '$' must contain a letter or underscore.",
-                            "integer $variableName = 10;");
+                            example, null, 1);
                 }
 
                 String ident = readIdentifier();
@@ -142,7 +145,7 @@ public class Lexer {
             }
 
             TokenType tokenType = tokensTypeByChar.get(c);
-
+            this.stringBuilder.setLength(0);
             switch (c) {
                 case '@':
                     advance();
@@ -239,34 +242,34 @@ public class Lexer {
 
                 case '&':
                     advance();
+                    this.stringBuilder.append("&");
 
-                    if (match('&')) {
-                        tokens.add(new Token(TokenType.AND));
-
-                        continue;
+                    while (peek() == '&') {
+                        this.stringBuilder.append(advance());
                     }
 
                     lexicalError(
                             DiagnosticCode.E001,
-                            "Character '&' is not valid alone.",
-                            "Use '&&' for logical AND.",
-                            "if (firstCondition && secondCondition) {\n\tprintln(\"The first and second conditions are in agreement.\")\n  }");
+                            "This '"+  this.stringBuilder.toString() + "' is not valid.",
+                            "Use 'and' for logical AND.",
+                            "if (firstCondition and secondCondition) {\n\tprintln(\"The first and second conditions are in agreement.\")\n  }",
+                        null ,this.stringBuilder.length());
                     break;
 
                 case '|':
                     advance();
+                    this.stringBuilder.append("|");
 
-                    if (match('|')) {
-                        tokens.add(new Token(TokenType.OR));
-
-                        continue;
+                    while (peek() == '|') {
+                        this.stringBuilder.append(advance());
                     }
 
                     lexicalError(
                             DiagnosticCode.E001,
-                            "Character '|' is not valid alone.",
-                            "Use '||' for logical OR.",
-                            "if (firstCondition && secondCondition) {\n\tprintln(\"Either the first or second condition is met.\")\n  }");
+                            "This '"+  this.stringBuilder.toString() + "' is not valid.",
+                            "Use 'or' for logical OR.",
+                            "if (firstCondition or secondCondition) {\n\tprintln(\"The first and second conditions are in agreement.\")\n  }",
+                        null, this.stringBuilder.length());
                     break;
             }
 
@@ -275,7 +278,9 @@ public class Lexer {
                         DiagnosticCode.E001,
                         "Character '" + c + "' is not valid in Klang.",
                         "Remove or replace it.",
-                        null);
+                        null, null,
+                        1
+                    );
             }
 
             tokens.add(new Token(tokenType));
@@ -287,23 +292,23 @@ public class Lexer {
     }
 
     private String readString(int startLine, int startColumn) {
-
-        StringBuilder s = new StringBuilder();
+        this.stringBuilder.setLength(0);
+        String example = "\"" + this.stringBuilder.toString().strip() + "\"";
 
         while (!isAtEnd()) {
-
             char c = advance();
-
             if (c == '"') {
-                return s.toString();
+                return this.stringBuilder.toString();
             }
 
             if (c == '\n') {
+                int errorLength = this.stringBuilder.length();
+
                 lexicalError(
                         DiagnosticCode.E002,
                         "String literal cannot span multiple lines.",
                         "Close the string before the line break.",
-                        "\"" + s.toString().strip() + "\""
+                        example, null, errorLength
 
                 );
             }
@@ -311,29 +316,32 @@ public class Lexer {
             if (c == '\\') {
 
                 if (isAtEnd()) {
+                    int errorLength = this.stringBuilder.length();
+
                     lexicalError(
                             DiagnosticCode.E002,
                             "Unclosed string literal.",
                             "Add closing quote.",
-                            "\"" + s.toString().strip() + "\"");
+                            example, null, errorLength);
                 }
 
                 char escaped = advance();
 
                 if (escaped == 'n') {
-                    s.append('\n');
+                    this.stringBuilder.append('\n');
                 } else if (escaped == 't') {
-                    s.append('\t');
+                    this.stringBuilder.append('\t');
                 } else if (escaped == '"') {
-                    s.append('"');
+                    this.stringBuilder.append('"');
                 } else if (escaped == '\\') {
-                    s.append('\\');
+                    this.stringBuilder.append('\\');
                 } else {
+                    int errorLength = this.stringBuilder.length();
+
                     lexicalError(
-                            DiagnosticCode.E003,
+                            DiagnosticCode.E004,
                             "Invalid escape sequence: \\" + escaped,
-                            "Use valid escapes like \\n, \\t, \\\".",
-                            "\"" + s.toString().strip() + "\""
+                            "Use valid escapes like \\n, \\t, \\\".", example, null, errorLength
 
                     );
                 }
@@ -341,59 +349,74 @@ public class Lexer {
                 continue;
             }
 
-            s.append(c);
+            this.stringBuilder.append(c);
         }
 
+        int errorLength = this.stringBuilder.length();
         lexicalError(
                 DiagnosticCode.E002,
                 "Unclosed string literal.",
                 "Add closing quote.",
-                "\"" + s.toString().strip() + "\""
+                example, null, errorLength
 
         );
-
         return null;
     }
 
     private String readCharacter() {
-
+        this.stringBuilder.setLength(0);
+        int errorLength = 1;
+        
         if (isAtEnd()) {
+            String example = "\'x\'";
+            
+            advance();
             lexicalError(
-                    DiagnosticCode.E004,
-                    "Unclosed character literal.",
-                    "Add closing '.",
-                    "'a'");
+                DiagnosticCode.E004,
+                "Unclosed character literal.",
+                "Add closing '.",
+                example,  
+                null, 
+                errorLength);
         }
 
         char c = advance();
         String value;
 
         if (c == '\\') {
-
             if (isAtEnd()) {
+                String example = "\'\\n\'";
+
+                advance();
                 lexicalError(
-                        DiagnosticCode.E004,
-                        "Unclosed character literal.",
-                        "Add closing '.",
-                        "'\\n'");
+                    DiagnosticCode.E004,
+                    "Unclosed character literal.",
+                    "Add closing '.",
+                    example, 
+                    null, 
+                    errorLength+2);
             }
 
             char escaped = advance();
 
             if (escaped == 'n') {
-                value = "\n";
+                value = "\\n";
             } else if (escaped == 't') {
-                value = "\t";
+                value = "\\t";
             } else if (escaped == '\'') {
                 value = "'";
             } else if (escaped == '\\') {
-                value = "\\";
+                value = "\\\\";
             } else {
+                String example = "'\\n'";
+
                 lexicalError(
-                        DiagnosticCode.E003,
-                        "Invalid escape in character literal: \\" + escaped,
-                        "Use valid escapes.",
-                        "'\\n'");
+                    DiagnosticCode.E004,
+                    "Invalid escape in character literal: \\" + escaped,
+                    "Use valid escapes.",
+                    example, 
+                    null,  
+                    errorLength);
                 return null;
             }
 
@@ -401,55 +424,92 @@ public class Lexer {
             value = String.valueOf(c);
         }
 
-        if (isAtEnd() || peek() != '\'') {
+        if (isAtEnd()) {
+            String example = "character charVariable = '" + value + "';";
+
+            advance();
             lexicalError(
-                    DiagnosticCode.E004,
-                    "Unclosed character literal.",
-                    "Add closing '.",
-                    "'a'");
+                DiagnosticCode.E004,
+                "Unclosed character literal.",
+                "Add closing '.",
+                example,
+                null, 
+                1);
+            return null;
+        }
+
+        if (peek() != '\'') {
+            this.stringBuilder.append(value);
+
+            while (!isAtEnd() && peek() != '\'') {
+                this.stringBuilder.append(advance());
+            }
+
+            String allChars = this.stringBuilder.toString();
+            errorLength = allChars.length();
+
+            String example = "character charVariable = '" + value + "';\n" +
+                            "// or\n" +
+                            "  String stringVariable = \"" + allChars + "\";";
+
+            lexicalError(
+                DiagnosticCode.E103,
+                "Character literal can only contain one character.",
+                "Remove extra characters or use a string literal.",
+                example,
+                "Furthermore, character types can only have one character",
+                errorLength);
         }
 
         advance();
         return value;
-    }
+    }   
 
     private String readIdentifier() {
+        this.stringBuilder.setLength(0);
 
-        StringBuilder s = new StringBuilder();
-        s.append(advance());
-
+        
+        this.stringBuilder.append(advance());
         while (Character.isLetterOrDigit(peek()) || peek() == '_') {
-            s.append(advance());
+            this.stringBuilder.append(advance());
         }
 
-        return s.toString();
+        return this.stringBuilder.toString();
     }
 
     private String readNumber() {
-
-        StringBuilder s = new StringBuilder();
+        this.stringBuilder.setLength(0);
 
         while (Character.isDigit(peek())) {
-            s.append(advance());
+            this.stringBuilder.append(advance());
         }
 
         if (peek() == '.' && Character.isDigit(peekNext())) {
-            s.append(advance());
+            this.stringBuilder.append(advance());
 
             while (Character.isDigit(peek())) {
-                s.append(advance());
+                this.stringBuilder.append(advance());
             }
         }
 
         if (Character.isLetter(peek())) {
+            String example = "integer numberVariable = " + this.stringBuilder.toString() + ";";
+
+            this.stringBuilder.setLength(0);
+            while (!isAtEnd() && Character.isLetter(peek())){
+                this.stringBuilder.append(advance());
+            }
+
+            int errorLenth = this.stringBuilder.length();
+
             lexicalError(
-                    DiagnosticCode.E001,
+                    DiagnosticCode.E101,
                     "Invalid numeric literal.",
                     "Numbers cannot be followed by letters.",
-                    "123");
+                    example, null, (errorLenth));
         }
 
-        return s.toString();
+        return this.stringBuilder.toString();
     }
 
     private boolean isAtEnd() {
@@ -499,7 +559,9 @@ public class Lexer {
             DiagnosticCode code,
             String cause,
             String fix,
-            String example) {
+            String example,
+            String note,
+            int lenth) {
 
         throw new LexicalException(
                 code,
@@ -508,7 +570,8 @@ public class Lexer {
                 cause,
                 fix,
                 example,
-                null);
+                note,
+            lenth);
     }
 
     private void initialzerhashMapTokensTypes() {
@@ -537,6 +600,9 @@ public class Lexer {
         tokensTypeByString.put("null", TokenType.NULL);
         tokensTypeByString.put("new", TokenType.NEW);
         tokensTypeByString.put("Use", TokenType.USE);
+        tokensTypeByString.put("or", TokenType.OR);
+        tokensTypeByString.put("and", TokenType.AND);
+        tokensTypeByString.put("because", TokenType.BECAUSE);
 
         // References
         tokensTypeByString.put("String", TokenType.STRING_TYPE);

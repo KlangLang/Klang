@@ -8,6 +8,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import org.klang.cli.error.KcInvalidFileType;
+import org.klang.cli.error.diagnostic.KcDiagnosticCode;
 import org.klang.core.lexer.Lexer;
 import org.klang.core.lexer.Token;
 import org.klang.core.parser.TokenStream;
@@ -27,7 +29,11 @@ public class ParseCommand implements Runnable {
         Path path = file.toPath();
 
         if (!path.getFileName().toString().endsWith(".k")) {
-            return;
+            throw new KcInvalidFileType(
+                KcDiagnosticCode.KC002,
+                 "parse",
+                  null,
+                   path.getFileName().toString());
         }
 
         try {

@@ -1,5 +1,7 @@
 package org.klang.cli;
 
+import org.klang.cli.error.diagnostic.KcDiagnosticColors;
+
 import picocli.CommandLine.Command;
 
 @Command(
@@ -7,13 +9,7 @@ import picocli.CommandLine.Command;
     description = "Show the Klang help catalog"
 )
 public class HelpCommand implements Runnable {
-
-    private static final String RESET = "\u001B[0m";
-    private static final String BOLD = "\u001B[1m";
-
-    private static final String WINE = "\u001B[38;2;127;0;31m";
-    private static final String GRAY_LIGHT = "\u001B[38;2;209;209;209m";
-    private static final String NOTE_COLOR = GRAY_LIGHT;
+    private final StringBuilder str = new StringBuilder();
 
     @Override
     public void run() {
@@ -21,33 +17,53 @@ public class HelpCommand implements Runnable {
     }
 
     private void printHelpBody() {
-        System.out.println();
-        System.out.println(WINE + BOLD + "KLANG • Command Line Interface" + RESET);
-        System.out.println();
+        final String NEW_LINE = "\n\n";
+        str.setLength(0);
 
-        System.out.println(WINE + BOLD + "  Usage" + RESET);
-        System.out.println("    kc <command> [options]");
-        System.out.println();
+        str.append(KcDiagnosticColors.structure("KLANG • Command Line Interface"))
+        .append(NEW_LINE);
 
-        System.out.println(WINE + BOLD + "  Commands" + RESET);
-        System.out.println("    " + BOLD + "lex" + RESET + "              Show tokens of a .k source file");
-        System.out.println("    " + BOLD + "gen-completion" + RESET + "   Generate autocomplete script");
-        System.out.println("    " + BOLD + "parse" + RESET + "            Parse file.k");
-        System.out.println();
+        str.append("  ").append(KcDiagnosticColors.structure("Usage"))
+        .append("\n");
+        
+        str.append("    ").append(KcDiagnosticColors.structure("kc ")).append(KcDiagnosticColors.neutral("<command> [options]"))
+        .append(NEW_LINE);
 
-        System.out.println(WINE + BOLD + "  Options" + RESET);
-        System.out.println("    -h, --help        Show this help catalog");
-        System.out.println("    -V, --version     Show Klang version");
-        System.out.println();
+        str.append("  ").append(KcDiagnosticColors.structure("Commands"))
+        .append("\n");
 
-        System.out.println(WINE + BOLD + "  Examples" + RESET);
-        System.out.println("    kc lex file.k");
-        System.out.println("    kc parse file.k");
-        System.out.println();
+        str.append("    ").append(KcDiagnosticColors.structure("lex")).append("              ").append(KcDiagnosticColors.neutral("Show tokens of a .k source file"))
+        .append("\n");
+        
+        str.append("    ").append(KcDiagnosticColors.structure("parse")).append("              ").append(KcDiagnosticColors.neutral("Parse file.k"))
+        .append("\n");
 
-        System.out.println(
-            "  " + NOTE_COLOR + "note:" + RESET +
-            " Use `kc <command> --help` for more information."
-        );
+        str.append("    ").append(KcDiagnosticColors.structure("gen-completion")).append("   ").append(KcDiagnosticColors.neutral("Generate autocomplete script"))
+        .append(NEW_LINE);
+        
+        str.append("  ").append(KcDiagnosticColors.structure("Options"))
+        .append("\n");
+        
+        str.append("    ").append(KcDiagnosticColors.structure("-h")).append(KcDiagnosticColors.separator(", ")).append(KcDiagnosticColors.structure("--help")).append("        ").append(KcDiagnosticColors.neutral("Show this help catalog"))
+        .append("\n");
+        str.append("    ").append(KcDiagnosticColors.structure("-V")).append(KcDiagnosticColors.separator(", ")).append(KcDiagnosticColors.structure("--version")).append("        ").append(KcDiagnosticColors.neutral("Show Klang version"))
+        .append(NEW_LINE);
+        
+        str.append("  ").append(KcDiagnosticColors.structure("Examples"))
+        .append("\n");
+
+        str.append("    ").append(KcDiagnosticColors.structure("kc ")).append(KcDiagnosticColors.neutral("lex ")).append(KcDiagnosticColors.structure("file.k"))
+        .append("\n");
+
+        str.append("    ").append(KcDiagnosticColors.structure("kc ")).append(KcDiagnosticColors.neutral("parse ")).append(KcDiagnosticColors.structure("file.k"))
+        .append(NEW_LINE);
+
+        str.append(KcDiagnosticColors.helpAccent("note:"))
+        .append("\n");
+
+        str.append(KcDiagnosticColors.neutral(" Use `kc <command> --help` for more information."));
+
+        System.out.println(str.toString());
+        str.setLength(0);
     }
 }

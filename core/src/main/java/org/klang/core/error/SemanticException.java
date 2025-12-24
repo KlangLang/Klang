@@ -11,9 +11,10 @@ public final class SemanticException extends KException {
         String cause,
         String fix,
         String example,
-        String note
+        String note,
+        int length
     ) {
-        super(code, location, contextLines, cause, fix, example, note);
+        super(code, location, contextLines, cause, fix, example, note, length);
     }
 
     @Override

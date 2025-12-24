@@ -1,15 +1,12 @@
 package org.klang.cli;
 
+import org.klang.cli.error.diagnostic.KcDiagnosticColors;
+
 import picocli.CommandLine.IVersionProvider;
 
 public class KVersionProvider implements IVersionProvider {
-
-    private static final String RESET = "\u001B[0m";
-    private static final String BOLD = "\u001B[1m";
-
-    private static final String WINE = "\u001B[38;2;127;0;31m";
-    private static final String GRAY = "\u001B[38;2;180;180;180m";
-    private static final String VERSION = "0.4.1";
+    private static final String VERSION = "0.6.0";
+    private static final StringBuilder  str = new StringBuilder();
 
     @Override
     public String[] getVersion() {
@@ -25,14 +22,17 @@ public class KVersionProvider implements IVersionProvider {
     }
 
     private static String formatHeader() {
-        return WINE + BOLD + "KLANG" + RESET +
-               " • " + VERSION + "-dev";
+        str.setLength(0);
+
+        str.append(KcDiagnosticColors.structure("KLANG")).append(" ").append(KcDiagnosticColors.separator("•")).append(" ").append(KcDiagnosticColors.neutral(VERSION + "-dev"));
+        return str.toString();
     }
 
     private static String formatEntry(String label, String value) {
-        return "  " + label +
-               padRight(label, 12) +
-               RESET + GRAY + value + RESET;
+        str.setLength(0);
+        str.append("  ").append(KcDiagnosticColors.structure(label)).append(padRight(label, 12)).append(KcDiagnosticColors.neutral(value));
+
+        return str.toString();    
     }
 
     private static String detectTarget() {

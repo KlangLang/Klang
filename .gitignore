@@ -23,6 +23,7 @@
 # DOCS
 # ---------------------------
 docs/diagnostic-ptbr.md
+docs/analise-completa.md
 
 *.war
 *.ear

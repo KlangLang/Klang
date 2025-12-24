@@ -7,6 +7,8 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import org.klang.cli.error.KcInvalidFileType;
+import org.klang.cli.error.diagnostic.KcDiagnosticCode;
 import org.klang.core.error.KException;
 import org.klang.core.lexer.Lexer;
 
@@ -25,7 +27,7 @@ public class LexCommand implements Runnable {
 
         if (!path.getFileName().toString().endsWith(".k")) {
 
-            return;
+            throw new KcInvalidFileType(KcDiagnosticCode.KC002, "lex", null, path.getFileName().toString());
         }
 
         try {
