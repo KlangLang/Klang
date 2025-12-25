@@ -1,6 +1,7 @@
 package org.klang.cli;
 
 import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 
 import java.io.File;
@@ -23,6 +24,12 @@ public class LexCommand implements Runnable {
     @Parameters(paramLabel = "FILE")
     private File file;
 
+    @Option(names = {"--show-tokens", "-st"}, description = "Explicitly show tokens")
+    private boolean showTokens = false;
+
+    @Option(names = {"--show-error", "-se"}, description = "Explicitly show tokens")
+    private boolean showError = false;
+
     @Override
     public void run() {
         Path path = file.toPath();
@@ -37,16 +44,24 @@ public class LexCommand implements Runnable {
             Lexer lexer = new Lexer(source, file.getPath());
             List<Token> a = lexer.tokenizeSourceCode();
 
-            for (Token var : a) {
-                System.out.println(var);
-            };
+            if (showTokens){
+                for (Token var : a) {
+                    System.out.println(var);
+                };
+            } else {
+                System.out.println("Lexing successful! (Use --show-tokens to see the output)");
+            }
             
 
         } catch (KException e) {
             System.out.println(e.format());
 
         } catch (Exception e) {
-            e.printStackTrace();
+            if (showError){
+                e.printStackTrace();
+            }{
+                System.out.println("Use --show-error or -se to show stack trace");                
+            }
             throw new RuntimeException("Internal compiler error", e);
         }
     }

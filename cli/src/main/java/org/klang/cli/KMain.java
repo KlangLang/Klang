@@ -25,14 +25,14 @@ public class KMain implements Runnable {
         names = { "-h", "--help" },
         description = "Show this help catalog"
     )
-    boolean help;
+    boolean help = false;
 
     @Option(
         names = { "-V", "--version" },
         versionHelp = true,
         description = "Show Klang version"
     )
-    boolean version;
+    boolean version = false;
 
     @Override
     public void run() {
