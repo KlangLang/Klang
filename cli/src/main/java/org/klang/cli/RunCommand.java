@@ -9,14 +9,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-import org.klang.cli.error.KcInvalidFileType;
-import org.klang.cli.error.diagnostic.KcDiagnosticCode;
 import org.klang.core.errors.SourceManager;
 import org.klang.core.lexer.Lexer;
 import org.klang.core.lexer.Token;
 import org.klang.core.parser.Parser;
 import org.klang.core.parser.ast.ProgramNode;
-import org.klang.core.semantics.TypeChecker;
 import org.klang.core.transpilers.JavaTranspiler;
 
 @Command(

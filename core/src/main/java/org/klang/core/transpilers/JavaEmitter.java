@@ -26,6 +26,16 @@ public class JavaEmitter {
         indent++;
     }
 
+    public void openBlockWith(String s){
+        emit("{");
+        emit(s);
+        indent++;
+    }
+
+    public String semicollon(){
+        return ";";
+    }
+
     public void closeBlock(){
         indent--;
         emitLine("}");

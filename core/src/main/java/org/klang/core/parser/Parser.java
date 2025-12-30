@@ -7,6 +7,7 @@ import java.util.List;
 import org.klang.core.lexer.Token;
 import org.klang.core.lexer.TokenType;
 import org.klang.core.parser.ast.AccessModifier;
+import org.klang.core.parser.ast.ArrayInitializerExpressionNode;
 import org.klang.core.parser.ast.AssignmentStatementNode;
 import org.klang.core.parser.ast.BinaryExpressionNode;
 import org.klang.core.parser.ast.BlockStatementNode;
@@ -87,14 +88,14 @@ public class Parser {
 
     private WhileStatementNode parseWhileStatement(){
         Token keyword = expect(TokenType.WHILE, "Expected 'while'");
-            controlDepth++;
+        controlDepth++;
 
         expect(TokenType.LPAREN, "Expected '(' after while");
         ExpressionNode condition = parseExpression();
         expect(TokenType.RPAREN, "Expected ')' after condition");
 
         BlockStatementNode body = parseBlockStatement();
-            controlDepth--;
+        controlDepth--;
 
         return new WhileStatementNode(condition, body, keyword.getLine(), keyword.getColumn());
     }
@@ -306,7 +307,18 @@ public class Parser {
             ExpressionNode size = parseExpression();
             expect(TokenType.RBRACKET, "Expected ']' after array size");
         
-            return new NewArrayExpressionNode(type, size, keyword.getLine(), keyword.getColumn());
+            consume(); // {
+
+            List<ExpressionNode> values = new ArrayList<>();
+
+            if (!check(TokenType.RBRACE)) {
+                do {
+                    values.add(parseExpression());
+                } while (match(TokenType.COMMA));
+            }
+
+            expect(TokenType.RBRACE, "Expected '}' after array initializer");
+            return new NewArrayExpressionNode(type, size, values, keyword.getLine(), keyword.getColumn());
         }
 
         if (check(TokenType.IDENTIFIER)){
@@ -357,7 +369,6 @@ public class Parser {
             Token identifier = expect(TokenType.IDENTIFIER, "Expected variable name");
             target = new VariableExpressionNode(identifier, identifier.getLine(), identifier.getColumn());
         }
-        
         
         
         expect(TokenType.ASSIGNMENT, "Expected '=' after variable '");
@@ -441,7 +452,7 @@ public class Parser {
 
                 Token parameterName = expect(TokenType.IDENTIFIER, "Expected parameter name");
 
-                parameters.add(new ParameterNode(paramType, parameterName));
+                parameters.add(new ParameterNode(new TypeReferenceNode(paramType, 0), parameterName));
             } while (match(TokenType.COMMA));
         }
 
@@ -451,7 +462,7 @@ public class Parser {
         BlockStatementNode body = parseFunctionBody();
         functionDepth--;
 
-        return new FunctionDeclarationNode(access, returnType, name, parameters, body, use, returnType.getLine(), returnType.getColumn());
+        return new FunctionDeclarationNode(access, new TypeReferenceNode(returnType, 0), name, parameters, body, use, returnType.getLine(), returnType.getColumn());
     }
 
     private BlockStatementNode parseFunctionBody(){

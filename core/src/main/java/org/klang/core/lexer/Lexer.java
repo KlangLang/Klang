@@ -678,6 +678,7 @@ public class Lexer {
         tokensTypeByString.put("module", TokenType.MODULE);
         tokensTypeByString.put("import", TokenType.IMPORT);
         tokensTypeByString.put("because", TokenType.BECAUSE);
+        tokensTypeByString.put("constant", TokenType.CONSTANT);
 
         // References
         tokensTypeByString.put("String", TokenType.STRING_TYPE);

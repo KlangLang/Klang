@@ -8,19 +8,24 @@ public class FunctionTable {
     private final Map<String, FunctionSymbol> functions = new HashMap<>(20);
 
     public FunctionTable(){
+        TypeSymbol returnT = new PrimitiveTypeSymbol(Type.VOID);
+        List<TypeSymbol> argsT = List.of(new PrimitiveTypeSymbol(Type.UNKNOWN));
+
         declare(
             new FunctionSymbol(
                 "println",
-                Type.VOID,
-                List.of(Type.UNKNOWN) // ou STRING por enquanto
+                returnT,
+                argsT
             )
         );
+
+        declare(new FunctionSymbol("printf", returnT, argsT));
 
         declare(
             new FunctionSymbol(
                 "print",
-                Type.VOID,
-                List.of(Type.UNKNOWN) // ou STRING por enquanto
+                returnT,
+                argsT
             )
         );
     }

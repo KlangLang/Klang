@@ -11,6 +11,10 @@ public class TypeReferenceNode {
         this.arrayDepth = arrayDepth;
     }
 
+    public boolean isArray(){
+        return arrayDepth != 0;
+    }
+
     public Token getBaseType() {
         return baseType;
     }

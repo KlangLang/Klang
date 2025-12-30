@@ -6,21 +6,22 @@ import java.util.Map;
 public class TypeContext {
 
     private final TypeContext parent;
-    private final Map<String, Type> symbols = new HashMap<>();
+    private final Map<String, TypeSymbol> symbols = new HashMap<>();
 
     public TypeContext(TypeContext parent) {
         this.parent = parent;
     }
 
-    public void declare(String name, Type type) {
+    public void declare(String name, TypeSymbol type) {
         if (symbols.containsKey(name)) {
-            throw new RuntimeException("Em declare, symbols ja tem a chave " + name);
+            throw new RuntimeException(
+                "Variable '" + name + "' already declared in this scope"
+            );
         }
-
         symbols.put(name, type);
     }
 
-    public Type resolve(String name) {
+    public TypeSymbol resolve(String name) {
         if (symbols.containsKey(name)) {
             return symbols.get(name);
         }

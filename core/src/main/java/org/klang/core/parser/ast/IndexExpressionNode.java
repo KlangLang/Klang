@@ -7,8 +7,7 @@ public class IndexExpressionNode extends ExpressionNode {
     public IndexExpressionNode(ExpressionNode target, ExpressionNode index, int line, int column){
         super(line, column);
 
-        this.target = target;;
+        this.target = target;
         this.index = index;
-        
     }
 }
