@@ -96,4 +96,4 @@ If something matters, it must be written down.
 ## Status
 
 Klang is an experimental language.
-Its design favors long-term correctness over short-term convenience.
+Its design favors long-term correctness over short-term convenience. 
