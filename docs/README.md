@@ -119,9 +119,18 @@ Planned rigor levels:
 ## Example (Early Syntax)
 
 ```k
-integer x = 10;
-integer y = 20;
+@Use("java")
+public void main(){
+    integer x = 10;
+    integer y = 20;
 
+    integer result = calculateSum(x, y);
+    println(result);
+
+    return;
+}
+
+@Use("java")
 public integer calculateSum(integer a, integer b) {
     return a + b;
 }
