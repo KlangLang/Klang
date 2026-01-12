@@ -75,7 +75,7 @@ public class TypeChecker {
                     DiagnosticCode.E206,
                     "Cannot redefine function '" + name + "'.",
                     "Rename your function to something unique.",
-                    "Function names must be unique globaly.",
+                    null,
                     fn);
         }
 
@@ -262,7 +262,8 @@ public class TypeChecker {
                 boolean isAllowed = context == ExpressionContext.ASSIGNMENT || context == ExpressionContext.GENERAL
                         || v.equals("0") || v.equals("1");
                 if (!isAllowed)
-                    semanticError(DiagnosticCode.E212, "Magic Number '" + v + "' violation", "Use constants", null,
+                    semanticError(DiagnosticCode.E212, "Magic Number '" + v + "' violation",
+                            "Assign this to a named variable", null,
                             node);
                 return new PrimitiveTypeSymbol(Type.INTEGER, true);
             }

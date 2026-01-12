@@ -183,7 +183,7 @@ public class Lexer {
                 int startColumn = this.column; // Captura coluna inicial
 
                 if (c == '$' && !(Character.isLetter(peekNext()) || peekNext() == '_')) {
-                    String example = "integer $validName = 10; // ok\n integer $ = 10; // invalid";
+                    String example = "integer $validName = 10; // ok\n  integer $ = 10; // invalid";
 
                     lexicalError(
                             DiagnosticCode.E001,
@@ -353,7 +353,7 @@ public class Lexer {
                                 "Unsupported operator '" + this.stringBuilder.toString() + "'.",
                                 "The power operator '**' is not supported.",
                                 "double res = Mathematics.power(base, exponent);",
-                                "Use the standard Mathematics library for exponentiation.",
+                                "The Mathematics standard library is not yet implemented. Use manual multiplication for powers in the meantime.",
                                 this.stringBuilder.length());
                     } else {
                         tokens.add(TokenFactory.simple(TokenType.MULTIPLY, "*", line, tokenStart));
@@ -399,7 +399,7 @@ public class Lexer {
                             DiagnosticCode.E001,
                             "Unsupported operator '" + this.stringBuilder.toString() + "'.",
                             "Use the keyword 'and' for logical conjunction.",
-                            "if (isValid and isReady) { ... }",
+                            "if (isValid and isReady) {\n      ...\n  }",
                             "K uses readable keywords ('and', 'or') instead of C-style symbols.",
                             this.stringBuilder.length());
                     break;
@@ -416,7 +416,7 @@ public class Lexer {
                             DiagnosticCode.E001,
                             "Unsupported operator '" + this.stringBuilder.toString() + "'.",
                             "Use the keyword 'or' for logical disjunction.",
-                            "if (isA or isB) { ... }",
+                            "if (isA or isB) {\n      ...\n  }",
                             "K uses readable keywords ('and', 'or') instead of C-style symbols.",
                             this.stringBuilder.length());
                     break;

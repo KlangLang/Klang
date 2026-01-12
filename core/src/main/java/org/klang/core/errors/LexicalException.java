@@ -54,7 +54,7 @@ public final class LexicalException extends KException {
 
                         if (currentLine == errorLine) {
                                 sb.append(" ".repeat(maxLineDigitWidth))
-                                                .append(DiagnosticColors.separator(" |  "))
+                                                .append(DiagnosticColors.separator(" | "))
                                                 .append(" ".repeat(Math.max(0, location.column() - length + 1)))
                                                 .append(DiagnosticColors.error("^".repeat(this.length)));
                                 sb.append("\n");

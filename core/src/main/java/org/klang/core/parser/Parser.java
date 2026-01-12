@@ -1041,13 +1041,14 @@ public class Parser {
                     "@Use(\"java\")",
                     null);
 
-            if (!target.getValue().equals("\"java\"")) {
+            String _target = target.getValue().substring(1, target.getValue().length() - 1);
+
+            if (!_target.equals("java")) {
                 throw new BackendException(
                         DiagnosticCode.E400,
                         new SourceLocation(filePath.toString(), target.getLine(), Math.max(target.getColumn() - 1, 0)),
                         sourceManager.getContextLines(target.getLine(), 2),
-                        "Unsupported backend target '" + target.getValue().substring(1, target.getValue().length() - 1)
-                                + "'",
+                        "Unsupported backend target '" + _target + "'",
                         "Use a supported backend (currently only 'java' is supported)",
                         "@Use(\"java\")\npublic void myFunction() { ... }",
                         "K currently supports only Java as a compilation target.",
