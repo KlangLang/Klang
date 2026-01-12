@@ -1,4 +1,4 @@
-@Use("java")
+@Use("c")
 public void main() {
     boolean isValid = true;
     // integer a = 2 + isValid;

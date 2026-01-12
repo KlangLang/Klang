@@ -32,6 +32,7 @@ import org.klang.core.parser.ast.VariableExpressionNode;
 import org.klang.core.parser.ast.WhileStatementNode;
 import org.klang.core.Heddle;
 import org.klang.core.diagnostics.DiagnosticCode;
+import org.klang.core.errors.BackendException;
 import org.klang.core.errors.ParserException;
 import org.klang.core.errors.SourceLocation;
 import org.klang.core.errors.SourceManager;
@@ -1039,6 +1040,19 @@ public class Parser {
                     "\"Target\"",
                     "@Use(\"java\")",
                     null);
+
+            if (!target.getValue().equals("\"java\"")) {
+                throw new BackendException(
+                        DiagnosticCode.E400,
+                        new SourceLocation(filePath.toString(), target.getLine(), Math.max(target.getColumn() - 1, 0)),
+                        sourceManager.getContextLines(target.getLine(), 2),
+                        "Unsupported backend target '" + target.getValue().substring(1, target.getValue().length() - 1)
+                                + "'",
+                        "Use a supported backend (currently only 'java' is supported)",
+                        "@Use(\"java\")\npublic void myFunction() { ... }",
+                        "K currently supports only Java as a compilation target.",
+                        target.getValue().length());
+            }
 
             expect(TokenType.RPAREN,
                     DiagnosticCode.E000,

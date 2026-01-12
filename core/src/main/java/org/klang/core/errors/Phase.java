@@ -4,5 +4,6 @@ public enum Phase {
     LEXICAL,
     SYNTAX,
     SEMANTIC,
+    BACKEND,
     CLI
 }

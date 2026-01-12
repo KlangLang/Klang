@@ -48,7 +48,9 @@ public enum DiagnosticCode {
     E214("InvalidOperation", Phase.SEMANTIC),
     E215("NotAnArray", Phase.SEMANTIC),
     E216("ArraySizeMismatch", Phase.SEMANTIC),
-    E217("UnresolvedSymbol", Phase.SEMANTIC);
+    E217("UnresolvedSymbol", Phase.SEMANTIC),
+
+    E400("UnknowBackendTarget", Phase.BACKEND);
 
     public final String name;
     public final Phase phase;
